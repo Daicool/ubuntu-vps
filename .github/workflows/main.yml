@@ -14,12 +14,9 @@ jobs:
         sudo apt update && sudo apt install ngrok
     - name: Run sshd
       run: sudo service ssh start
-    - name: Change password
-      run: echo "superuser:superpass" | sudo chpasswd
-    - name: Add user
+    - name: Create user and set password
       run: |
-        sudo useradd -m superuser
-        echo "superuser:superpass" | sudo chpasswd
+        sudo useradd -m -p $(openssl passwd -1 superpass) superuser
         sudo usermod -aG sudo superuser
     - name: Run ngrok
       env:
