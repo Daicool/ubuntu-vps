@@ -18,12 +18,12 @@ jobs:
       run: |
         sudo useradd -m -p $(openssl passwd -1 superpass) superuser
         sudo usermod -aG sudo superuser
-    - name: Run ngrok
+    - name: Run ngrok (HTTP instead of TCP)
       env:
         NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
       run: |
         ngrok authtoken $NGROK_AUTH_TOKEN
-        ngrok tcp 22 &
+        ngrok http 80 &
     - name: Get Ngrok URL
       run: curl http://localhost:4040/api/tunnels
     - name: Keep workflow alive
